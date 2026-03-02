@@ -33,10 +33,13 @@ public class SearchServlet extends HttpServlet {
    * By calling doPost, this allows search results to be bookmarked and refreshed
    * (since many browsers default to GET for URL-based navigation).
    *
-   * @param request  the HttpServletRequest object that contains the request the client has made of the servlet
-   * @param response the HttpServletResponse object that contains the response the servlet sends to the client
+   * @param request  the HttpServletRequest object that contains the request the
+   *                 client has made of the servlet
+   * @param response the HttpServletResponse object that contains the response the
+   *                 servlet sends to the client
    * @throws ServletException if the request for the GET could not be handled
-   * @throws IOException      if an input or output error is detected when the servlet handles the GET request
+   * @throws IOException      if an input or output error is detected when the
+   *                          servlet handles the GET request
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     doPost(request, response);
@@ -46,14 +49,18 @@ public class SearchServlet extends HttpServlet {
    * Handles HTTP POST requests.
    * This is where the core search logic resides.
    *
-   * @param request  the HttpServletRequest object that contains the request the client has made of the servlet
-   * @param response the HttpServletResponse object that contains the response the servlet sends to the client
+   * @param request  the HttpServletRequest object that contains the request the
+   *                 client has made of the servlet
+   * @param response the HttpServletResponse object that contains the response the
+   *                 servlet sends to the client
    * @throws ServletException if the request for the POST could not be handled
-   * @throws IOException      if an input or output error is detected when the servlet handles the POST request
+   * @throws IOException      if an input or output error is detected when the
+   *                          servlet handles the POST request
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     // 1. Retrieve the search term from the request parameter.
-    // The "searchstring" parameter name matches the 'name' attribute of the input field in search.html.
+    // The "searchstring" parameter name matches the 'name' attribute of the input
+    // field in search.html.
     String searchString = request.getParameter("searchstring");
 
     try {
@@ -63,7 +70,8 @@ public class SearchServlet extends HttpServlet {
 
       // 3. Basic validation of search input.
       if (searchString == null || searchString.trim().isEmpty()) {
-        // If the user didn't enter anything, set an error message to be displayed on the result page.
+        // If the user didn't enter anything, set an error message to be displayed on
+        // the result page.
         request.setAttribute("errorMessage", "Please enter a search term.");
       } else {
         // 4. Perform the search and store the results in a request attribute.
@@ -73,14 +81,16 @@ public class SearchServlet extends HttpServlet {
       }
 
       // 5. Forward the request to the JSP page for display.
-      // RequestDispatcher.forward() is used to send the request/response objects to another resource (JSP).
+      // RequestDispatcher.forward() is used to send the request/response objects to
+      // another resource (JSP).
       ServletContext context = getServletContext();
       RequestDispatcher dispatch = context.getRequestDispatcher("/searchResult.jsp");
       dispatch.forward(request, response);
 
     } catch (IOException e) {
       // 6. Exception Handling.
-      // If there is an issue loading the model or data, log the error and forward to a dedicated error page.
+      // If there is an issue loading the model or data, log the error and forward to
+      // a dedicated error page.
       request.setAttribute("errorMessage", "Error loading data: " + e.getMessage());
       ServletContext context = getServletContext();
       RequestDispatcher dispatch = context.getRequestDispatcher("/error.jsp");
