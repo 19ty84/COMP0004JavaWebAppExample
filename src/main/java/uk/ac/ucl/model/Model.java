@@ -6,40 +6,49 @@ import java.util.List;
 public class Model {
     private DataLoader dataLoader;
     private DataFrame dataFrame;
-    private ArrayList<String> patientNames;
+    private ArrayList<String> patientSummaries;
 
     public Model() {
         dataLoader = new DataLoader();
-        dataFrame = new DataFrame();
-        patientNames = new ArrayList<String>();
+        dataFrame = null;
+        patientSummaries = new ArrayList<String>();
     }
 
-    public ArrayList<String> getPatientNames() {
-        return patientNames;
+    public List<String> getPatientSummaries() {
+        return patientSummaries;
     }
 
-    // This method illustrates how to read csv data from a file.
-    // The data files are stored in the root directory of the project (the directory
-    // your project is in),
-    // in the directory named data.
     public void readFile(String fileName) {
         dataLoader.readFile(fileName);
         dataFrame = dataLoader.getDataFrame();
         for (int i = 0; i < dataFrame.getRowCount(); i++) {
-            patientNames.add(getPatientName(i));
+            patientSummaries.add(getPatientSummaryFromRowIndex(i));
         }
     }
 
-    private String getPatientName(int rowIndex) {
+    private String getPatientSummaryFromRowIndex(int rowIndex) {
+        String id = dataFrame.getValue("ID", rowIndex);
         String first = dataFrame.getValue("FIRST", rowIndex);
         String last = dataFrame.getValue("LAST", rowIndex);
-        return first + " " + last;
+        String birthday = dataFrame.getValue("BIRTHDATE", rowIndex);
+        String gender = dataFrame.getValue("GENDER", rowIndex);
+        return id + " " + first + " " + last + " " + birthday + " " + gender;
     }
 
-    // This also returns dummy data. The real version should use the keyword
-    // parameter to search
-    // the data and return a list of matching items.
     public List<String> searchFor(String keyword) {
-        return List.of("Search keyword is: " + keyword, "result1", "result2", "result3");
+        if (keyword.length() == 0)
+            return List.of("Search keyword is empty. Please enter at least 1 character.");
+
+        ArrayList<String> searchResult = new ArrayList<String>();
+        for (int row = 0; row < dataFrame.getRowCount(); row++) {
+            for (int col = 0; col < dataFrame.getColumnCount(); col++) {
+                String columnName = dataFrame.getColumnNames().get(col);
+                if (dataFrame.getValue(columnName, row).contains(keyword)) {
+                    searchResult.add(getPatientSummaryFromRowIndex(row));
+                    break; // Search next row
+                }
+            }
+        }
+        return searchResult;
     }
 }

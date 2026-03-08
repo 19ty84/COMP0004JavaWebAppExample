@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class DataFrame {
     private ArrayList<Column> columns;
     private ArrayList<String> columnNames;
-    private HashMap<String, Integer> columnIndexes;
+    private HashMap<String, Integer> columnIndexes; // Map from name to index
     private int columnCount;
 
     public DataFrame() {
@@ -29,6 +29,8 @@ public class DataFrame {
     }
 
     public int getRowCount() {
+        if (columns.size() == 0)
+            return 0;
         return columns.get(0).getSize();
     }
 

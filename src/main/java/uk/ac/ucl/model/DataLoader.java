@@ -35,7 +35,7 @@ public class DataLoader {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed to open file \"" + fileName + "\": " + e.getMessage());
         }
     }
 

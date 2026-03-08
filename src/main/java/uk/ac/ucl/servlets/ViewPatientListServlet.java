@@ -46,11 +46,12 @@ public class ViewPatientListServlet extends HttpServlet {
       Model model = ModelFactory.getModel();
 
       // 2. Retrieve the list of patient names from the model.
-      List<String> patientNames = model.getPatientNames();
+      List<String> patientSummaries = model.getPatientSummaries();
 
       // 3. Add the data to the request object.
-      // This makes the 'patientNames' list accessible to the JSP page for rendering.
-      request.setAttribute("patientNames", patientNames);
+      // This makes the 'patientSummaries' list accessible to the JSP page for
+      // rendering.
+      request.setAttribute("patientSummaries", patientSummaries);
 
       // 4. Invoke the JSP for display.
       // RequestDispatcher.forward() is used to send the request/response objects to
